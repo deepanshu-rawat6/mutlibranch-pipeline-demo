@@ -1,36 +1,12 @@
 pipeline {
     agent any
-
     stages {
-        stage('Testing Strong Enforcement') {
+        stage('Build') {
             steps {
                 script {
-                    echo "Attempting ArmorCode validation with ArmorCode token"
-                    armorcodeReleaseGate(
-                            product: 'chirag_g',
-                            subProduct: 'cmsf',
-                            env: 'Production',
-                            maxRetries: 2,
-                            mode: 'block'
-                    )
+                    armorcodeReleaseGate(product: "120_Days_Review", subProduct: "120_Days_Review", env: "Production", mode: "block")
                 }
             }
-        }
-
-        stage('Should Not Run') {
-            steps {
-                echo "ENFORCEMENT BROKEN: Second stage ran after failure!"
-            }
-        }
-    }
-
-    // Optional: Post-actions block to handle different build outcomes
-    post {
-        failure {
-            echo "ArmorCode validation failed. Stopping pipeline."
-        }
-        success {
-            echo "ArmorCode validation passed successfully."
         }
     }
 }
